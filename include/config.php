@@ -42,7 +42,7 @@ $TBDEV['time_date'] = '';
 // FYNNON FUCKWIT FRENCH RETARD
 $TBDEV['mysql_host'] = "localhost";
 $TBDEV['mysql_user'] = "root";
-$TBDEV['mysql_pass'] = "123456";
+$TBDEV['mysql_pass'] = "";
 $TBDEV['mysql_db']   = "demo";
 
 // Cookie setup
@@ -109,9 +109,9 @@ $script = str_replace( "\\", "/", $script );
 //$TBDEV['peerlimit'] = 50000; //deprecated. no longer used.
 
 // Email for sender/return path.
-$TBDEV['site_email'] = "coldfusion@localhost";
+$TBDEV['site_email'] = "fusion@localhost";
 
-$TBDEV['site_name'] = "SceneZone";
+$TBDEV['site_name'] = "";
 
 $TBDEV['language'] = 'en';
 //charset
