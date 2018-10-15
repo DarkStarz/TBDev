@@ -104,46 +104,19 @@ $adminbutton = '';
     echo "</div></div></div>\n";
 
     // === shoutbox 09
-    echo "<form action='shoutbox.php' method='get' target='sbox' name='shbox' onsubmit='mysubmit()'>
-       <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-          <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_shout']}</span></div>
-             <br />
-       <b>{$lang['index_shoutbox']}</b> [ <a href='shoutbox.php?show_shout=1&show=no'><b>{$lang['index_shoutbox_close']}</b></a> ]
-       <iframe src='shoutbox.php' width='100%' height='200' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe>
-       <br />
-       <br />
-       <script type=\"text/javascript\" src=\"scripts/shout.js\"></script>    
-       <div align='center'>
-       <b>{$lang['index_shoutbox_shout']}</b>
-       <input type='text' maxlength='180' name='shbox_text' size='100' />
-       <input class='button' type='submit' value='{$lang['index_shoutbox_send']}' />
-       <input type='hidden' name='sent' value='yes' />
-       <br />
-        <a href=\"javascript:SmileIT(':-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
-       <a href=\"javascript:SmileIT(':smile:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
-       <a href=\"javascript:SmileIT(':-D','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/grin.gif' alt='Grin' title='Grin' /></a> 
-       <a href=\"javascript:SmileIT(':lol:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/laugh.gif' alt='Laughing' title='Laughing' /></a> 
-       <a href=\"javascript:SmileIT(':w00t:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /></a> 
-       <a href=\"javascript:SmileIT(':blum:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/blum.gif' alt='Rasp' title='Rasp' /></a> 
-       <a href=\"javascript:SmileIT(';-)','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/wink.gif' alt='Wink' title='Wink' /></a> 
-       <a href=\"javascript:SmileIT(':devil:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/devil.gif' alt='Devil' title='Devil' /></a> 
-       <a href=\"javascript:SmileIT(':yawn:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/yawn.gif' alt='Yawn' title='Yawn' /></a> 
-       <a href=\"javascript:SmileIT(':-/','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/confused.gif' alt='Confused' title='Confused' /></a> 
-       <a href=\"javascript:SmileIT(')','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/clown.gif' alt='Clown' title='Clown' /></a> 
-       <a href=\"javascript:SmileIT(':innocent:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/innocent.gif' alt='Innocent' title='innocent' /></a> 
-       <a href=\"javascript:SmileIT(':whistle:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/whistle.gif' alt='Whistle' title='Whistle' /></a> 
-       <a href=\"javascript:SmileIT(':unsure:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/unsure.gif' alt='Unsure' title='Unsure' /></a> 
-       <a href=\"javascript:SmileIT(':blush:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/blush.gif' alt='Blush' title='Blush' /></a> 
-       <a href=\"javascript:SmileIT(':hmm:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/hmm.gif' alt='Hmm' title='Hmm' /></a> 
-       <a href=\"javascript:SmileIT(':hmmm:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' title='Hmmm' /></a> 
-       <a href=\"javascript:SmileIT(':huh:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/huh.gif' alt='Huh' title='Huh' /></a> 
-       <a href=\"javascript:SmileIT(':look:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/look.gif' alt='Look' title='Look' /></a> 
-       <a href=\"javascript:SmileIT(':rolleyes:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' title='Roll Eyes' /></a> 
-       <a href=\"javascript:SmileIT(':kiss:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/kiss.gif' alt='Kiss' title='Kiss' /></a> 
-       <a href=\"javascript:SmileIT(':blink:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/blink.gif' alt='Blink' title='Blink' /></a> 
-       <a href=\"javascript:SmileIT(':baby:','shbox','shbox_text')\"><img border='0' src='{$TBDEV['pic_base_url']}smilies/baby.gif' alt='Baby' title='Baby' /></a><br/>
-        </div></div>
-       </form><br />\n";
+    echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 901px;padding: 1em;' class='mCol'>
+	      <div class='myBlock'><div style='margin-top:  5px;'>
+          <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>Chat</span></div></div>
+		  <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>  
+	      <iframe src='shoutbox.php' width='100%' height='200' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe>  
+          <div align='center'>
+          <div style='max-width: 98%;padding: 8px 12px 10px 12px;border: 1px solid rgba(0,0,0,.5);background: rgba(0,0,0,.25);margin-left: 1px;'>
+		  <form action='shoutbox.php' method='get' target='sbox' name='shbox' onsubmit='mysubmit()'> 
+		  <input style='color: #b9b9b9;background: rgba(0,0,0,.25);padding: 8px 5px 5px 5px;border: 1px solid rgba(0,0,0,.5);' type='text' maxlength='180' name='shbox_text' size='100' />
+		  <div style='margin-top: -36px;margin-left: 800px;'>
+          <input class='button' type='submit' value='{$lang['index_shoutbox_send']}' />
+		  <input type='hidden' name='sent' value='yes' /></div>          
+		  </form></div></div></div></div>";
        //==end 09 shoutbox	
 
 //== Latest forum posts [set limit from config]
