@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2018 at 05:41 PM
+-- Generation Time: Oct 16, 2018 at 09:44 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `avps` (
 --
 
 INSERT INTO `avps` (`arg`, `value_s`, `value_i`, `value_u`) VALUES
-('lastcleantime', '', 0, 1539698105),
+('lastcleantime', '', 0, 1539718127),
 ('last24', '0', 1, 1539593758);
 
 -- --------------------------------------------------------
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
   `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `place` int(10) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -307,6 +307,13 @@ CREATE TABLE IF NOT EXISTS `news` (
   KEY `added` (`added`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`id`, `userid`, `added`, `body`, `headline`) VALUES
+(1, 1, 1539593322, 'We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'Temp News');
+
 -- --------------------------------------------------------
 
 --
@@ -321,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `overforums` (
   `forid` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -544,6 +551,35 @@ CREATE TABLE IF NOT EXISTS `sitelog` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stats`
+--
+
+CREATE TABLE IF NOT EXISTS `stats` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `regusers` int(10) unsigned NOT NULL DEFAULT '0',
+  `unconusers` int(10) unsigned NOT NULL DEFAULT '0',
+  `torrents` int(10) unsigned NOT NULL DEFAULT '0',
+  `seeders` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechers` int(10) unsigned NOT NULL DEFAULT '0',
+  `torrentstoday` int(10) unsigned NOT NULL DEFAULT '0',
+  `donors` int(10) unsigned NOT NULL DEFAULT '0',
+  `unconnectables` int(10) unsigned NOT NULL DEFAULT '0',
+  `forumtopics` int(10) unsigned NOT NULL DEFAULT '0',
+  `forumposts` int(10) unsigned NOT NULL DEFAULT '0',
+  `numactive` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `stats`
+--
+
+INSERT INTO `stats` (`id`, `regusers`, `unconusers`, `torrents`, `seeders`, `leechers`, `torrentstoday`, `donors`, `unconnectables`, `forumtopics`, `forumposts`, `numactive`) VALUES
+(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stylesheets`
 --
 
@@ -633,13 +669,6 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   KEY `category_visible` (`category`,`visible`),
   FULLTEXT KEY `ft_search` (`search_text`,`ori_descr`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `torrents`
---
-
-INSERT INTO `torrents` (`id`, `info_hash`, `name`, `filename`, `save_as`, `search_text`, `descr`, `ori_descr`, `category`, `size`, `added`, `type`, `numfiles`, `comments`, `views`, `hits`, `times_completed`, `leechers`, `seeders`, `last_action`, `visible`, `banned`, `owner`, `numratings`, `ratingsum`, `nfo`, `client_created_by`, `poster`) VALUES
-(1, '1a4f373d035cc1de09344c402bfd96d0f900b7c4', 'Theory', 'TBDev.2009(Final).rev.295.zip.torrent', 'TBDev.2009(Final).rev.295.zip', 'TBDev 2009 Final rev 295 zip TBDev 2009 Final rev 295 zip Theory', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 19, 1479869, 1538011697, 'single', 1, 0, 4, 0, 0, 0, 0, 1538011697, 'no', 'no', 1, 0, 0, '', 'uTorrent/3.5.4', 'pic/noposter.jpg');
 
 -- --------------------------------------------------------
 
