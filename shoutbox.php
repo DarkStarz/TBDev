@@ -184,30 +184,6 @@
     //== White
     if ( $CURUSER['shoutboxbg'] == 1 ) {
     $HTMLOUT .="<style type='text/css'>
-    A {color: #000000; font-weight: bold;  }
-    A:hover {color: #FF273D;}
-    .small {font-size: 10pt; font-family: arial; }
-    .date {font-size: 8pt;}
-    </style>";
-    $bg = '#ffffff';
-    $fontcolor = '#000000';
-    $dtcolor = '#356AA0';
-    }
-    // == Grey
-    if ( $CURUSER['shoutboxbg'] == 2 ) {
-    $HTMLOUT .="<style type='text/css'>
-    A {color: #ffffff; font-weight: bold;  }
-    A:hover {color: #FF273D;}
-    .small {font-size: 10pt; font-family: arial; }
-    .date {font-size: 8pt;}
-    </style>";
-    $bg = '#777777';
-    $fontcolor = '#000000';
-    $dtcolor = '#FFFFFF';
-    }
-    // == Black
-    if ( $CURUSER['shoutboxbg'] == 3 ) {
-    $HTMLOUT .="<style type='text/css'>
     A {color: #FFFFFF; font-weight: bold; ; }
     A:hover {color: #FFFFFF;}
     .small {font-size: 10pt; font-family: arial; }
@@ -323,7 +299,7 @@
     }
     // //////////////////////
      
-    $res = mysql_query( "SELECT s.id, s.userid, s.date , s.text,s.to_user, u.username, u.class, u.donor, u.warned, u.enabled, (SELECT count(id) FROM messages WHERE receiver = ".$CURUSER['id']." AND unread = 'yes') as pms FROM shoutbox as s LEFT JOIN users as u ON s.userid=u.id ORDER BY s.date DESC LIMIT 30" ) or sqlerr( __FILE__, __LINE__ );
+    $res = mysql_query( "SELECT s.id, s.userid, s.date , s.text,s.to_user, u.username, u.avatar, u.class, u.donor, u.warned, u.enabled, (SELECT count(id) FROM messages WHERE receiver = ".$CURUSER['id']." AND unread = 'yes') as pms FROM shoutbox as s LEFT JOIN users as u ON s.userid=u.id ORDER BY s.date DESC LIMIT 30" ) or sqlerr( __FILE__, __LINE__ );
      
     if ( mysql_num_rows( $res ) == 0 )
         $HTMLOUT .="No shouts here";
@@ -331,11 +307,11 @@
        $HTMLOUT .="<table border='0' cellspacing='0' cellpadding='2' width='100%' align='left' class='small'>\n";
           $gotpm = 0;
         while ( $arr = mysql_fetch_assoc( $res ) ) {
-             
-             if($arr['pms'] > 0 && $gotpm == 0){
-             $HTMLOUT .= '<tr><td align=\'center\'><a href=\''.$TBDEV['baseurl'].'/messages.php\' target=\'_parent\'><font color=\'blue\'>You have '.$arr['pms'].' new message'.($arr['pms'] > 1 ? 's' : '').'</font></a></td></tr>';
-             $gotpm++;
-       }
+         if ($arr["avatar"]) {
+          $avatar['shoutbox'] = "<div style='margin-top: 3px;margin-left: 3px;width: 60px;box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.8);height:58px;border:1px solid #000000;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;'><img style='border:1px solid #111111;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;margin-left: 4px;margin-top: 3px;' width='50' height='50' src='" . htmlspecialchars($arr["avatar"]) . "'/></div>";
+         } else {
+          $avatar['shoutbox'] = "<div style='margin-top: 5px;margin-left: 3px;width: 60px;box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.8);height:55px;border:1px solid #000000;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;'><img style='border:1px solid #111111;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;margin-left: 4px;margin-top: 2px;' width='50' src='pic/avatar.jpg'/></div>";
+         }     
        
        if(($arr['to_user'] != $CURUSER['id'] && $arr['to_user'] != 0) && $arr['userid'] != $CURUSER['id']) 
           continue;
@@ -350,7 +326,12 @@
             $date = get_date($arr["date"], 0,1);
             $user_stuff = $arr;
             $user_stuff['id'] = $arr['userid'];
-            $HTMLOUT .="<tr style='background-color:$bg;'><td><span class='size1' style='color:$fontcolor; '>[$date]</span>\n$del $delall $edit $pm $private ".format_username($user_stuff)."<span class='size2' style='color:$fontcolor;'> " . format_comment( $arr["text"] ) . "\n</span></td></tr>\n";
+	  // if ($arr["avatar"]) {
+        // $HTMLOUT .="<div style='margin-top: -5px;'><tr style='background-color:$bg;'><td><div style='padding: 3px;'></div>\n{$avatar['shoutbox']}<div style='margin-top: -35px;'><div style='margin-top: 20px;'><span class='size1' style='margin-left: 70px;color:$fontcolor; '><u>$date</u></span></div>\n<div style='margin-top: -30px;margin-left: 70px;'> $del $delall $edit $pm $private </div> <div style='margin-top: -49px;margin-left: 70px;'><span style='background: url(pic/glitter.gif);'>".format_username($user_stuff, true)."</span></div></div>\n<div style='margin-top: -33px;margin-left: 70px;'><font color='".get_user_class_color($arr['class'])."'>".get_user_class_name($arr['class'])."</font></div><div style='margin-left: 1px;margin-top: 33px;padding: 1px;text-align: left;border-top-left-radius: 2px;border-top-right-radius: 2px;border-bottom-left-radius: 2px;border-bottom-right-radius: 2px;'><span class='size2' style='margin-left: 1px;color:$fontcolor;'> " . format_comment( $arr["text"] ) . "\n</span></div><div style='padding: 1px;'></div><div style='margin-left: -2px;width: 100.6%;height: 5px;box-shadow: 0 0px 5px 0 rgba(0,0,0,0.8);'><br /></td></tr></div>";
+       //} else {
+        // $HTMLOUT .="<div style='margin-top: -5px;'><tr style='background-color:$bg;'><td><div style='margin-left: -2px;width: 100.6%;height: 5px;box-shadow: 0 0px 5px 0 rgba(0,0,0,0.8);'></div>\n{$avatar['shoutbox']}<div style='margin-top: -33px;'><div style='margin-top: 20px;'><span class='size1' style='margin-left: 70px;color:$fontcolor; '><u>$date</u></span></div>\n<div style='margin-top: -30px;margin-left: 70px;'> $del $delall $edit $pm $private </div> <div style='margin-top: -49px;margin-left: 70px;'><span style='background: url(pic/glitter.gif);'>".format_username($user_stuff, true)."</span></div></div>\n<div style='margin-top: -33px;margin-left: 70px;'><font color='".get_user_class_color($arr['class'])."'>".get_user_class_name($arr['class'])."</font></div><div style='margin-left: 1px;margin-top: 33px;padding: 1px;text-align: left;border-top-left-radius: 2px;border-top-right-radius: 2px;border-bottom-left-radius: 2px;border-bottom-right-radius: 2px;'><span class='size2' style='margin-left: 1px;color:$fontcolor;'> " . format_comment( $arr["text"] ) . "\n</span></div><div style='padding: 1px;'></div><div style='margin-left: -2px;width: 100.6%;height: 5px;box-shadow: 0 0px 5px 0 rgba(0,0,0,0.8);'><br /></td></tr></div>";
+       //}	
+         $HTMLOUT .="<tr style='background-color:$bg;'><td><span class='size1' style='color:$fontcolor; '>[$date]</span>\n$del $delall $edit $pm $private ".format_username($user_stuff)."<span class='size2' style='color:$fontcolor;'> " . format_comment( $arr["text"] ) . "\n</span></td></tr>\n";
         }
         $HTMLOUT .="</table>";
     }
