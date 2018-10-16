@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2018 at 03:36 PM
+-- Generation Time: Oct 16, 2018 at 05:41 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -19,6 +19,44 @@ SET time_zone = "+00:00";
 --
 -- Database: `demo`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attachmentdownloads`
+--
+
+CREATE TABLE IF NOT EXISTS `attachmentdownloads` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fileid` int(10) NOT NULL DEFAULT '0',
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `userid` int(10) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  `downloads` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fileid_userid` (`fileid`,`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attachments`
+--
+
+CREATE TABLE IF NOT EXISTS `attachments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `topicid` int(10) unsigned NOT NULL DEFAULT '0',
+  `postid` int(10) unsigned NOT NULL DEFAULT '0',
+  `filename` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `size` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `owner` int(10) unsigned NOT NULL DEFAULT '0',
+  `downloads` int(10) unsigned NOT NULL DEFAULT '0',
+  `added` int(11) NOT NULL DEFAULT '0',
+  `type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `topicid` (`topicid`),
+  KEY `postid` (`postid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -39,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `avps` (
 --
 
 INSERT INTO `avps` (`arg`, `value_s`, `value_i`, `value_u`) VALUES
-('lastcleantime', '', 0, 1539605235),
+('lastcleantime', '', 0, 1539698105),
 ('last24', '0', 1, 1539593758);
 
 -- --------------------------------------------------------
@@ -175,16 +213,33 @@ CREATE TABLE IF NOT EXISTS `files` (
 --
 
 CREATE TABLE IF NOT EXISTS `forums` (
-  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `forid` tinyint(4) DEFAULT '0',
   `postcount` int(10) unsigned NOT NULL DEFAULT '0',
   `topiccount` int(10) unsigned NOT NULL DEFAULT '0',
+  `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `place` int(10) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_mods`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_mods` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) NOT NULL DEFAULT '0',
+  `fid` int(10) NOT NULL DEFAULT '0',
+  `user` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`,`fid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -252,12 +307,21 @@ CREATE TABLE IF NOT EXISTS `news` (
   KEY `added` (`added`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `news`
+-- Table structure for table `overforums`
 --
 
-INSERT INTO `news` (`id`, `userid`, `added`, `body`, `headline`) VALUES
-(1, 1, 1539593322, 'We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'Temp News');
+CREATE TABLE IF NOT EXISTS `overforums` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `minclassview` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `forid` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -312,6 +376,55 @@ CREATE TABLE IF NOT EXISTS `pmboxes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `postpollanswers`
+--
+
+CREATE TABLE IF NOT EXISTS `postpollanswers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pollid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `selection` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `pollid` (`pollid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postpolls`
+--
+
+CREATE TABLE IF NOT EXISTS `postpolls` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `added` int(11) NOT NULL DEFAULT '0',
+  `question` text COLLATE utf8_unicode_ci NOT NULL,
+  `option0` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option1` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option2` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option3` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option4` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option5` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option6` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option7` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option8` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option9` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option10` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option11` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option12` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option13` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option14` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option15` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option16` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option17` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option18` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `option19` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `sort` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `posts`
 --
 
@@ -319,15 +432,18 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `topicid` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `added` int(11) NOT NULL,
-  `body` text COLLATE utf8_unicode_ci,
+  `added` int(22) DEFAULT '0',
+  `body` longtext COLLATE utf8_bin,
   `editedby` int(10) unsigned NOT NULL DEFAULT '0',
-  `editedat` int(11) NOT NULL,
+  `editedat` int(11) DEFAULT '0',
+  `post_history` mediumtext COLLATE utf8_bin NOT NULL,
+  `posticon` int(2) NOT NULL DEFAULT '0',
+  `anonymous` enum('yes','no') COLLATE utf8_bin NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -409,15 +525,7 @@ CREATE TABLE IF NOT EXISTS `shoutbox` (
   `text_parsed` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `for` (`to_user`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
-
---
--- Dumping data for table `shoutbox`
---
-
-INSERT INTO `shoutbox` (`id`, `userid`, `to_user`, `username`, `date`, `text`, `text_parsed`) VALUES
-(5, 1, 0, '', 1539603195, 'yo', 'yo'),
-(6, 1, 0, '', 1539603202, 'yo', 'yo');
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -449,25 +557,39 @@ CREATE TABLE IF NOT EXISTS `stylesheets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscriptions`
+--
+
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `topicid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `topics`
 --
 
 CREATE TABLE IF NOT EXISTS `topics` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `subject` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `locked` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `subject` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `locked` enum('yes','no') COLLATE utf8_bin NOT NULL DEFAULT 'no',
   `forumid` int(10) unsigned NOT NULL DEFAULT '0',
   `lastpost` int(10) unsigned NOT NULL DEFAULT '0',
-  `sticky` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `sticky` enum('yes','no') COLLATE utf8_bin NOT NULL DEFAULT 'no',
   `views` int(10) unsigned NOT NULL DEFAULT '0',
+  `pollid` int(10) unsigned NOT NULL DEFAULT '0',
+  `anonymous` enum('yes','no') COLLATE utf8_bin NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`),
-  KEY `locked_sticky` (`locked`,`sticky`),
-  KEY `forumid` (`forumid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  KEY `locked_sticky` (`locked`,`sticky`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -517,7 +639,7 @@ CREATE TABLE IF NOT EXISTS `torrents` (
 --
 
 INSERT INTO `torrents` (`id`, `info_hash`, `name`, `filename`, `save_as`, `search_text`, `descr`, `ori_descr`, `category`, `size`, `added`, `type`, `numfiles`, `comments`, `views`, `hits`, `times_completed`, `leechers`, `seeders`, `last_action`, `visible`, `banned`, `owner`, `numratings`, `ratingsum`, `nfo`, `client_created_by`, `poster`) VALUES
-(1, '1a4f373d035cc1de09344c402bfd96d0f900b7c4', 'Theory', 'TBDev.2009(Final).rev.295.zip.torrent', 'TBDev.2009(Final).rev.295.zip', 'TBDev 2009 Final rev 295 zip TBDev 2009 Final rev 295 zip Theory', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 19, 1479869, 1538011697, 'single', 1, 0, 2, 0, 0, 0, 0, 1538011697, 'no', 'no', 1, 0, 0, '', 'uTorrent/3.5.4', 'pic/noposter.jpg');
+(1, '1a4f373d035cc1de09344c402bfd96d0f900b7c4', 'Theory', 'TBDev.2009(Final).rev.295.zip.torrent', 'TBDev.2009(Final).rev.295.zip', 'TBDev 2009 Final rev 295 zip TBDev 2009 Final rev 295 zip Theory', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 19, 1479869, 1538011697, 'single', 1, 0, 4, 0, 0, 0, 0, 1538011697, 'no', 'no', 1, 0, 0, '', 'uTorrent/3.5.4', 'pic/noposter.jpg');
 
 -- --------------------------------------------------------
 
@@ -536,6 +658,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `added` int(11) NOT NULL,
   `last_login` int(11) NOT NULL,
   `last_access` int(11) NOT NULL,
+  `forum_access` int(11) NOT NULL DEFAULT '0',
   `editsecret` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `privacy` enum('strong','normal','low') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'normal',
   `stylesheet` int(10) DEFAULT '1',
@@ -580,6 +703,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `show_shout` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
   `chatpost` int(11) NOT NULL DEFAULT '1',
   `shoutboxbg` enum('1','2','3') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '1',
+  `forum_mod` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'no',
+  `forums_mod` varchar(320) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `subscription_pm` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `mood` int(10) NOT NULL DEFAULT '1',
+  `anonymous` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `ip` (`ip`),
