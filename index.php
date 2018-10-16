@@ -16,31 +16,26 @@
 |   $URL$
 +------------------------------------------------
 */
-ob_start("ob_gzhandler");
-
 require_once "include/bittorrent.php";
 require_once "include/user_functions.php";
-
 dbconn(true);
-
 loggedinorreturn();
-
-    $lang = array_merge( load_language('global'), load_language('index') );
-    //$lang = ;
-    stdhead('Home');
-    $HTMLOUT = '';
-
-//echo "<img src='pic/latest.png'/>";	
+$lang = array_merge( load_language('global'), load_language('index') );
+stdhead('Home');			
     // 09 poster mod
         $query = "SELECT id, name, poster FROM torrents WHERE poster <> '' ORDER BY added DESC limit 15";
         $result = mysql_query( $query );
         $num = mysql_num_rows( $result );
         // count rows
         echo "<script type='text/javascript' src='{$TBDEV['baseurl']}/scripts/scroll.js'></script>";
-        echo "<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'><div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_latest']}</span></div><br />
-        <div style=\"overflow:hidden\">
-        <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> 
-        <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">";
+        echo "<div style='margin-top:  -10px;margin-left: -25px;padding: 1em;max-width: 900px;' class='mCol'>
+              <div class='myBlock'>
+	          <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
+              <div class='myBlock-cap'><span  style='margin-left: -745px;font-weight:bold;font-size:12pt;'>{$lang['index_latest']}</span></div></div>
+              <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
+              <div style='background-color: #1f1f1f;' style=\"overflow:hidden\">
+              <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> 
+              <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">";
         $i = 20;
         while ( $row = mysql_fetch_assoc( $result ) ) {
             $id = (int) $row['id'];
@@ -55,9 +50,8 @@ loggedinorreturn();
             <a href='{$TBDEV['baseurl']}/details.php?id=$id'><img src='" . htmlspecialchars( $poster ) . "' alt='$name' title='$name' width='100' height='120' border='0' /></a>";
             $i++;
         }
-        echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div></div><br />\n";
-        //== end 09 poster mod
-
+        echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div></div></div>";
+        //== end 09 poster mod		
 	
 $adminbutton = '';   
     
@@ -65,7 +59,7 @@ $adminbutton = '';
           $adminbutton = "&nbsp;<span  style='float:right;'><a href='admin.php?action=news'><img title='Add News' width='20' height='20' src='pic/plus.png'/></a></span>\n";
           
     echo "
-    <div style='margin-top:  -20px;margin-left: -25px;padding: 1em;max-width: 900px;' class='mCol'>
+    <div style='margin-top:  -10px;margin-left: -25px;padding: 1em;max-width: 900px;' class='mCol'>
     <div class='myBlock'><div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
     <div class='myBlock-cap'><span  style='margin-left: -815px;font-weight:bold;font-size:12pt;'>News</span>{$adminbutton}</div></div>
     <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
@@ -94,7 +88,7 @@ $adminbutton = '';
        echo "<div style='margin-top: -15px;margin-left:  0px;max-width: 900px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px  0 rgba(255, 255, 255, 0.2);'>
                      <div class='myBlock-con'></div>\n";
         
-       echo "<div style='margin-top: -8px;border: 1px solid  #222;color: #b9b9b9;'  class='myBlock-con'>".format_comment($array['body'])."</div><div></div></div><div  style='padding: 1.5em;'></div><div style='margin-top:  -30px;'></div>";
+       echo "<div style='margin-top: -8px;background-color: #1f1f1f;border: 1px solid  #222;color: #b9b9b9;'  class='myBlock-con'>".format_comment($array['body'])."</div><div></div></div><div  style='padding: 1.5em;'></div><div style='margin-top:  -30px;'></div>";
         
       
       }
@@ -173,97 +167,108 @@ $adminbutton = '';
 			<div style='margin-top: -5px;text-align: center;color: #b9b9b9;'>
 			Owners ({$owners}) | Administrators ({$admins}) | Moderators ({$moderator}) | V.I.P ({$donors}) | Power Users ({$power}) | Members ({$members}) | Validating ({$unverified})
 			</div>";
-      echo "<table style='margin-top: 5px;border: 1px solid  #222;color: #b9b9b9;' border='0' cellpadding='10' cellspacing='0' width='100%'>
+      echo "<table style='background-color: #1f1f1f;margin-top: 5px;color: #b9b9b9;' border='0' cellpadding='10' cellspacing='0' width='100%'>
             <tr class='table'>
             <td class='text'>{$activeusers}</td>
-			</tr></table></div><div style='margin-top:  11px;'></div>";	   
-	   
-//== Latest forum posts [set limit from config]
-echo "<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-	      <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>5 Latest Forum Posts </span></div><br />";
-$page = 1;
-$num  = 0;
-//== Latest posts query
-$topicres = mysql_query("SELECT t.id, t.userid, t.subject, t.locked, t.forumid, t.lastpost, t.sticky, t.views, t.forumid, f.minclassread, f.name " . ", (SELECT COUNT(id) FROM posts WHERE topicid=t.id) AS p_count " . ", p.userid AS puserid, p.added " . ", u.id AS uid, u.username " . ", u2.username AS u2_username " . "FROM topics AS t " . "LEFT JOIN forums AS f ON f.id = t.forumid " . "LEFT JOIN posts AS p ON p.id=(SELECT MAX(id) FROM posts WHERE topicid = t.id) " . "LEFT JOIN users AS u ON u.id=p.userid " . "LEFT JOIN users AS u2 ON u2.id=t.userid " . "WHERE f.minclassread <= " . $CURUSER['class'] . " " . "ORDER BY t.lastpost DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-if (mysql_num_rows($topicres) > 0) {
-  echo "<table width='100%' cellspacing='0' cellpadding='5'><tr>
-        <td align='left' class='colhead'>{$lang['latestposts_topic_title']}</td>
-        <td align='center' class='colhead'>{$lang['latestposts_replies']}</td>
-        <td align='center' class='colhead'>{$lang['latestposts_views']}</td>
-        <td align='center' class='colhead'>{$lang['latestposts_last_post']}</td></tr>";
-    while ($topicarr = mysql_fetch_assoc($topicres)) {
-        
-        $topicid      = 0 + $topicarr['id'];
-        $topic_userid = 0 + $topicarr['userid'];
-        $perpage      = $CURUSER['postsperpage'];
-        ;
-        
-        if (!$perpage)
-            $perpage = 24;
-        $posts   = 0 + $topicarr['p_count'];
-        $replies = max(0, $posts - 1);
-        $first   = ($page * $perpage) - $perpage + 1;
-        $last    = $first + $perpage - 1;
-        
-        if ($last > $num)
-            $last = $num;
-        $pages = ceil($posts / $perpage);
-        $menu  = '';
-        for ($i = 1; $i <= $pages; $i++) {
-            if ($i == 1 && $i != $pages) {
-                $menu .= "[ ";
-            }
-            if ($pages > 1) {
-                $menu .= "<a href='/forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=$i'>$i</a>\n";
-            }
-            if ($i < $pages) {
-                $menu .= "|\n";
-            }
-            if ($i == $pages && $i > 1) {
-                $menu .= "]";
-            }
-        }
-        
-        $added = get_date($topicarr['added'], '', 0, 1);
-        if ($topicarr['pos_anon'] == 'yes') {
-            if ($CURUSER['class'] < UC_MODERATOR && $CURUSER['id'] != $topicarr['puserid'])
-                $username = "<i>Anonymous</i>";
-            else
-                $username = "<i>Anonymous</i><br />(" . (!empty($topicarr['username']) ? "<a href='/userdetails.php?id=" . (int) $topicarr['puserid'] . "'><b>" . htmlspecialchars($topicarr['username']) . "</b></a>" : "<i>Unknown[$topic_userid]</i>") . ")";
-        } else {
-            $username = (!empty($topicarr['username']) ? "<a href='/userdetails.php?id=" . (int) $topicarr['puserid'] . "'><b>" . htmlspecialchars($topicarr['username']) . "</b></a>" : ($topic_userid == '0' ? "<i>System</i>" : "<i>Unknown[$topic_userid]</i>"));
-        }
-        if ($topicarr['top_anon'] == 'yes') {
-            if ($CURUSER['class'] < UC_MODERATOR && $CURUSER['id'] != $topic_userid)
-                $author = "<i>Anonymous</i>";
-            else
-                $author = "<i>Anonymous</i>(" . (!empty($topicarr['u2_username']) ? "<a href='/userdetails.php?id=$topic_userid'><b>" . htmlspecialchars($topicarr['u2_username']) . "</b></a>" : "<i>Unknown[$topic_userid]</i>") . ")";
-        } else {
-            $author = (!empty($topicarr['u2_username']) ? "<a href='/userdetails.php?id=$topic_userid'><b>" . htmlspecialchars($topicarr['u2_username']) . "</b></a>" : ($topic_userid == '0' ? "<i>System</i>" : "<i>Unknown[$topic_userid]</i>"));
-        }
-        $staffimg  = ($topicarr['minclassread'] >= UC_MODERATOR ? "<img src='" . $TBDEV['pic_base_url'] . "staff.png' border='0' alt='Staff forum' title='Staff Forum' />" : '');
-        $stickyimg = ($topicarr['sticky'] == 'yes' ? "<img src='" . $TBDEV['pic_base_url'] . "sticky.gif' border='0' alt='Sticky' title='Sticky Topic' />&nbsp;&nbsp;" : '');
-        $lockedimg = ($topicarr['locked'] == 'yes' ? "<img src='" . $TBDEV['pic_base_url'] . "forumicons/locked.gif' border='0' alt='Locked' title='Locked Topic' />&nbsp;" : '');
-        $subject   = $lockedimg . $stickyimg . "<a href='/forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=last#" . (int) $topicarr['lastpost'] . "'><b>" . htmlspecialchars($topicarr['subject']) . "</b></a>&nbsp;&nbsp;$staffimg&nbsp;&nbsp;$menu<br /><font class='small'>in <a href='forums.php?action=viewforum&amp;forumid=" . (int) $topicarr['forumid'] . "'>" . htmlspecialchars($topicarr['name']) . "</a>&nbsp;by&nbsp;$author&nbsp;&nbsp;($added)</font>";
-        
-      echo "<tr><td>{$subject}</td><td align='center'>{$replies}</td><td align='center'>" . number_format($topicarr['views']) . "</td><td align='center'>{$username}</td></tr>";
-    }
-   echo "</table></div><br />\n";
-} else {
-    //== If there are no posts...
-   echo "<div class='roundedCorners' style='text-align:center;border:1px solid black;background:transparent;'><span style='font-weight:bold;font-size:10pt;'>No Post Yet</span></div></div><br />";
-}
-//== End latest forum posts
+			</tr></table></div><div style='margin-top:  11px;'></div>";
+			
+// whitelist clients	
+  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 901px;' class='mCol'>
+        <div class='myBlock'>
+	    <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
+        <div class='myBlock-cap'><span  style='margin-left: -5px;font-weight:bold;font-size:12pt;'>Client Whitelist</span></div></div>
+        <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
+	    <div style='margin-top: -9px;margin-left: -0px;color: #b9b9b9;' class='stats_info'>
+        <text>qBittorrent For Mac</text>
+	    <div style='padding:0.2em;'></div>
+        <text>qBittorrent For PC</text>
+        <div style='padding:0.2em;'></div>
+	    <text>rTorrent 0.8.1 - 0.9.2</text>
+	    <div style='padding:0.2em;'></div>
+        <text>uTorrent 3.0 Build 26473</text>
+	    <div style='padding:0.2em;'></div>
+        <text>uTorrent 3.2.2 Build 28500</text>
+	    <div style='padding:0.2em;'></div>
+        <text>No other torrent clients are supported, if you use another client and have any problems with your stats not reporting correctly, Sorry, we cannot help you.</text></pre><br />
+	    </div></div></div><div style='padding:0.4em;'></div>";
 
-      echo "<div style='margin-top: -10px;margin-left: -10px;text-align:left;min-width: 901px;padding: 1em;' class='mCol'>
-	        <div class='myBlock2'><div style='margin-top:  5px;'>
-            <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>Disclaimer</span></div></div>
-		    <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
-            <div style='color: #b9b9b9;'>
-			<font class='small'>{$lang['foot_disclaimer']}</font>
-			<div style='margin-top:  5px;'></div>
-			</div>";
+// Statistics
+ $cache_stats = "./cache/stats.txt";
+ $cache_stats_life = 5 * 60; // 5min
+ if (file_exists($cache_stats) && is_array(unserialize(file_get_contents($cache_stats))) && (time() - filemtime($cache_stats)) < $cache_stats_life)
+ $row = unserialize(@file_get_contents($cache_stats));
+ else {
+ $stats = mysql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1") or sqlerr(__FILE__, __LINE__);
+ $row = mysql_fetch_assoc($stats);
+ $handle = fopen($cache_stats, "w+");
+ fwrite($handle, serialize($row));
+ fclose($handle);
+ }
+ $seeders = number_format($row['seeders']);
+ $leechers = number_format($row['leechers']);
+ $registered = number_format($row['regusers']);
+ $unverified = number_format($row['unconusers']);
+ $torrents = number_format($row['torrents']);
+ $torrentstoday = number_format($row['torrentstoday']);
+ $ratiounconn = $row['ratiounconn'];
+ $unconnectables = $row['unconnectables'];
+ $ratio = round(($row['ratio'] * 100));
+ $peers = number_format($row['peers']);
+ $numactive = number_format($row['numactive']);
+ $donors = number_format($row['donors']);
+ $forumposts = number_format($row['forumposts']);
+ $forumtopics = number_format($row['forumtopics']);
+  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 901px;' class='mCol'>
+        <div class='myBlock'>
+	    <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
+        <div class='myBlock-cap'><span  style='margin-left: -5px;font-weight:bold;font-size:12pt;'>Statistics</span></div></div>
+        <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
+        <table style='margin-top: -9px;background-color:#1f1f1f;' width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td align='center'>
+        <table style='background-color: #181818;color: #b9b9b9;' class='main' width='100%' border='1' cellspacing='0' cellpadding='5'>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_regged']}</td><td align='right'>{$registered}/{$TBDEV['maxusers']}</td>
+        <td class='rowhead'>{$lang['index_stats_online']}</td><td align='right'>{$numactive}</td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_uncon']}</td><td align='right'>{$unverified}</td>
+        <td class='rowhead'>{$lang['index_stats_donor']}</td><td align='right'>{$donors}</td>
+        </tr>
+        <tr>
+        <td colspan='4'> </td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_topics']}</td><td align='right'>{$forumtopics}</td>
+        <td class='rowhead'>{$lang['index_stats_torrents']}</td><td align='right'>{$torrents}</td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_posts']}</td><td align='right'>{$forumposts}</td>
+        <td class='rowhead'>{$lang['index_stats_newtor']}</td><td align='right'>{$torrentstoday}</td>
+        </tr>
+        <tr>
+        <td colspan='4'> </td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_peers']}</td><td align='right'>{$peers}</td>
+        <td class='rowhead'>{$lang['index_stats_unconpeer']}</td><td align='right'>{$unconnectables}</td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_seeders']}</td><td align='right'>{$seeders}</td>
+        <td class='rowhead' align='right'><b>{$lang['index_stats_unconratio']}</b></td><td align='right'><b>".round($ratiounconn * 100)."</b></td>
+        </tr>
+        <tr>
+        <td class='rowhead'>{$lang['index_stats_leechers']}</td><td align='right'>{$leechers}</td>
+        <td class='rowhead'>{$lang['index_stats_slratio']}</td><td align='right'>{$ratio}</td>
+        </tr></table></td></tr></table></div></div><br />";		
+// Disclaimer
+  echo "<div style='margin-top: -15px;margin-left: -10px;text-align:left;min-width: 901px;padding: 1em;' class='mCol'>
+	    <div class='myBlock2'><div style='margin-top:  5px;'>
+        <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>Disclaimer</span></div></div>
+		<div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
+        <div style='margin-top: -8px;color: #b9b9b9;padding: 1em;background-color: #1f1f1f;'>
+        <font class='small'>{$lang['foot_disclaimer']}</font>
+	    <div style='margin-top:  5px;'></div>
+	    </div></div>";
 ///////////////////////////// FINAL OUTPUT //////////////////////
 
-    print $HTMLOUT . stdfoot();
+echo stdfoot();
 ?>

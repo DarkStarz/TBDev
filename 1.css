@@ -1407,16 +1407,27 @@ div#base_icons {
 position: relative;
 width: 99%; /*marquee width - adjust to your design */
 height: 120px; /*marquee height */
-background-color:lightyellow;
+background-color: #1f1f1f;
 color:black;
 overflow: hidden;
-border: 1px solid blue;
 padding: 2px;
 padding-left: 4px;
 text-align:left;
+margin-top: -8px;
 }
 
 #marqueecontainer img {
 border-width:2px;
 border-style:solid;
+}
+
+div.stats_info {
+	
+  margin-top: -20px;
+  background: #1f1f1f;
+  width: 99.3%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 0.2em;
+  border: 1px solid #1c252b;
+  margin-left:0px;	
 }	
