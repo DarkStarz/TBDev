@@ -463,7 +463,7 @@ if ( $CURUSER && $unread >= "1" ) {
 function stdfoot() {
   global $TBDEV;
   
-    return "</td></tr></table>\n
+    return "</td></tr></table><div style='padding: 1em;'></div>
     </body></html>\n";
 }
 
