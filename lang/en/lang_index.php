@@ -1,7 +1,7 @@
 <?php
 
 $lang = array(
-
+'index_latest'  => "Latest Torrents",
 #News
 'news_title'	=> "Recent News",
 'news_link' => "News Page",

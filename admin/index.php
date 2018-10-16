@@ -83,9 +83,10 @@ require_once "include/user_functions.php";
 			<!-- row 4 -->
 			<tr><td>
 			
-			<span class='btn'><a href='admin.php?action=forummanage'>{$lang['index_forummanage']}</a></span>
+            <span class='btn'><a href='admin.php?action=forummanager'>{$lang['index_forummanage']}</a></span>
+            <span class='btn'><a href='admin.php?action=moforums'>{$lang['index_moforums']}</a></span>
+            <span class='btn'><a href='msubforums.php'>{$lang['index_msubforums']}</a></span>
 			
-
 			<span class='btn'><a href='admin.php?action=categories'>{$lang['index_categories']}</a></span>
 			
 			</td></tr>

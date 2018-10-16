@@ -42,7 +42,7 @@ $TBDEV['time_date'] = '';
 // FYNNON FUCKWIT FRENCH RETARD
 $TBDEV['mysql_host'] = "localhost";
 $TBDEV['mysql_user'] = "root";
-$TBDEV['mysql_pass'] = "";
+$TBDEV['mysql_pass'] = "123456";
 $TBDEV['mysql_db']   = "demo";
 
 // Cookie setup
@@ -85,8 +85,10 @@ $TBDEV['announce_urls'][] = "http://localhost/announce.php";
 if ($_SERVER["HTTP_HOST"] == "")
   $_SERVER["HTTP_HOST"] = $_SERVER["SERVER_NAME"];
   
-$TBDEV['baseurl'] = "http://" . $_SERVER["HTTP_HOST"]."";
-
+$TBDEV['baseurl'] = "https://" . $_SERVER["HTTP_HOST"]."";
+    $TBDEV['forums_online'] = 1;
+    $TBDEV['forums_autoshout_on'] = 1;
+    $TBDEV['forums_seedbonus_on'] = 1;
 /*
 ## DO NOT UNCOMMENT THIS: IT'S FOR LATER USE!
 $host = getenv( 'SERVER_NAME' );
@@ -109,9 +111,9 @@ $script = str_replace( "\\", "/", $script );
 //$TBDEV['peerlimit'] = 50000; //deprecated. no longer used.
 
 // Email for sender/return path.
-$TBDEV['site_email'] = "fusion@localhost";
+$TBDEV['site_email'] = "coldfusion@localhost";
 
-$TBDEV['site_name'] = "";
+$TBDEV['site_name'] = "SceneZone";
 
 $TBDEV['language'] = 'en';
 //charset

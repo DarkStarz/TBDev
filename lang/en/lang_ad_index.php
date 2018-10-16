@@ -21,6 +21,9 @@ $lang = array(
 'index_resetpassword' => 'Reset password',
 'index_rep_system' => 'Reputation system',
 'index_rep_settings' => 'Reputation settings',
-'index_news' => 'Add/Delete News'
+'index_news' => 'Add/Delete News',
+'index_forummanage' => 'Forum manage',
+'index_moforums' => 'Over Forum manage',
+'index_msubforums' => 'Sub Forum manage',
 );
 ?>
