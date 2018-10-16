@@ -51,7 +51,10 @@
                         'docleanup'       => 'docleanup',
                         'log'             => 'log',
                         'news'            => 'news',
-                        'forummanage'     => 'forummanage'
+                        'forummanager' => 'forummanager',
+                        'moforums' => 'moforums',
+                        'msubforums' => 'msubforums',
+						'forummanage'     => 'forummanage'
                         );
     
     if( in_array($action, $ad_actions) AND file_exists( "admin/{$ad_actions[ $action ]}.php" ) )

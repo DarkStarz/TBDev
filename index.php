@@ -29,37 +29,36 @@ loggedinorreturn();
     //$lang = ;
     stdhead('Home');
     $HTMLOUT = '';
-/*
-$a = @mysql_fetch_assoc(@mysql_query("SELECT id,username FROM users WHERE status='confirmed' ORDER BY id DESC LIMIT 1")) or die(mysql_error());
-if ($CURUSER)
-  $latestuser = "<a href='userdetails.php?id=" . $a["id"] . "'>" . $a["username"] . "</a>";
-else
-  $latestuser = $a['username'];
-*/
 
-    $registered = number_format(get_row_count("users"));
-    //$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
-    $torrents = number_format(get_row_count("torrents"));
-    //$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
+//echo "<img src='pic/latest.png'/>";	
+    // 09 poster mod
+        $query = "SELECT id, name, poster FROM torrents WHERE poster <> '' ORDER BY added DESC limit 15";
+        $result = mysql_query( $query );
+        $num = mysql_num_rows( $result );
+        // count rows
+        echo "<script type='text/javascript' src='{$TBDEV['baseurl']}/scripts/scroll.js'></script>";
+        echo "<div style='text-align:left;width:80%;border:1px solid blue;padding:5px;'><div style='background:lightgrey;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_latest']}</span></div><br />
+        <div style=\"overflow:hidden\">
+        <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> 
+        <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">";
+        $i = 20;
+        while ( $row = mysql_fetch_assoc( $result ) ) {
+            $id = (int) $row['id'];
+            $name = htmlspecialchars( $row['name'] );
+            $poster = htmlspecialchars( $row['poster'] );
+            $name = str_replace( '_', ' ' , $name );
+            $name = str_replace( '.', ' ' , $name );
+            $name = substr( $name, 0, 50 );
+            if ( $i == 0 )
+            echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div><div style=\"overflow:hidden\">
+            <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">
+            <a href='{$TBDEV['baseurl']}/details.php?id=$id'><img src='" . htmlspecialchars( $poster ) . "' alt='$name' title='$name' width='100' height='120' border='0' /></a>";
+            $i++;
+        }
+        echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div></div><br />\n";
+        //== end 09 poster mod
 
-    $r = mysql_query("SELECT value_u FROM avps WHERE arg='seeders'") or sqlerr(__FILE__, __LINE__);
-    $a = mysql_fetch_row($r);
-    $seeders = 0 + $a[0];
-    $r = mysql_query("SELECT value_u FROM avps WHERE arg='leechers'") or sqlerr(__FILE__, __LINE__);
-    $a = mysql_fetch_row($r);
-    $leechers = 0 + $a[0];
-    if ($leechers == 0)
-      $ratio = 0;
-    else
-      $ratio = round($seeders / $leechers * 100);
-    $peers = number_format($seeders + $leechers);
-    $seeders = number_format($seeders);
-    $leechers = number_format($leechers);
-
-
-    //stdhead();
-    //$HTMLOUT .= "<div class='roundedCorners'><font class='small''>Welcome to our newest member, <b>$latestuser</b>!</font></div>\n";
-
+	
 $adminbutton = '';   
     
     if (get_user_class() >= UC_ADMINISTRATOR)
@@ -119,6 +118,66 @@ $adminbutton = '';
 		  </form></div></div></div></div>";
        //==end 09 shoutbox	
 
+    //==09 users on index
+    $active3 ="";
+    $file = "./cache/active.txt";
+    $expire = 30; // 30 seconds
+    if (file_exists($file) && filemtime($file) > (time() - $expire)) {
+    $active3 = unserialize(file_get_contents($file));
+    } else {
+    $dt = sqlesc(time() - 180);
+    $active1 = mysql_query("SELECT id, username, class, warned, donor FROM users WHERE last_access >= $dt ORDER BY class DESC") or sqlerr(__FILE__, __LINE__);
+        while ($active2 = mysql_fetch_assoc($active1)) {
+            $active3[] = $active2;
+        }
+        $OUTPUT = serialize($active3);
+        $fp = fopen($file, "w");
+        fputs($fp, $OUTPUT);
+        fclose($fp);
+    } // end else
+    $activeusers = "";
+    if (is_array($active3))
+    foreach ($active3 as $arr) {
+        if ($activeusers) $activeusers .= ",\n";
+        $activeusers .= "<span style=\"white-space: nowrap;\">"; 
+        $arr["username"] = "<font color='#" . get_user_class_color($arr['class']) . "'> " . htmlspecialchars($arr['username']) . "</font>";
+        $donator = $arr["donor"] === "yes";
+        $warned = $arr["warned"] === "yes";
+     
+        if ($CURUSER)
+            $activeusers .= "<a href='{$TBDEV['baseurl']}/userdetails.php?id={$arr["id"]}'><b>{$arr["username"]}</b></a>";
+        else
+            $activeusers .= "<b>{$arr["username"]}</b>";
+        if ($donator)
+             $activeusers .= "<img src='{$TBDEV['pic_base_url']}star.gif' alt='Donated' />";
+        if ($warned)
+            $activeusers .= "<img src='{$TBDEV['pic_base_url']}warned.gif' alt='Warned' />";
+        $activeusers .= "</span>";
+    }
+     
+    if (!$activeusers)
+        $activeusers = "{$lang['index_noactive']}";
+	
+     $owners      = get_row_count('users', "WHERE owners='yes'");
+     $admins      = get_row_count('users', "WHERE admin='yes'");
+     $moderator   = get_row_count('users', "WHERE moderator='yes'");	 
+     $donors      = get_row_count('users', "WHERE donor='yes'");
+	 $power       = get_row_count('users', "WHERE poweruser='yes'");
+     $members     = get_row_count('users', "WHERE members='yes'");
+     $unverified = number_format(get_row_count("users", "WHERE status='pending'"));	 
+	 
+      echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 901px;padding: 1em;' class='mCol'>
+	        <div class='myBlock'><div style='margin-top:  5px;'>
+            <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_active']}</span></div></div>
+		    <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
+			<div style='margin-top: -5px;text-align: center;color: #b9b9b9;'>
+			Owners ({$owners}) | Administrators ({$admins}) | Moderators ({$moderator}) | V.I.P ({$donors}) | Power Users ({$power}) | Members ({$members}) | Validating ({$unverified})
+			</div>";
+      echo "<table style='margin-top: 5px;border: 1px solid  #222;color: #b9b9b9;' border='0' cellpadding='10' cellspacing='0' width='100%'>
+            <tr class='table'>
+            <td class='text'>{$activeusers}</td>
+			</tr></table></div><div style='margin-top:  11px;'></div>";	   
+	   
 //== Latest forum posts [set limit from config]
 echo "<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
 	      <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>5 Latest Forum Posts </span></div><br />";
@@ -195,67 +254,6 @@ if (mysql_num_rows($topicres) > 0) {
    echo "<div class='roundedCorners' style='text-align:center;border:1px solid black;background:transparent;'><span style='font-weight:bold;font-size:10pt;'>No Post Yet</span></div></div><br />";
 }
 //== End latest forum posts
-
-	   
-    //==09 users on index
-    $active3 ="";
-    $file = "./cache/active.txt";
-    $expire = 30; // 30 seconds
-    if (file_exists($file) && filemtime($file) > (time() - $expire)) {
-    $active3 = unserialize(file_get_contents($file));
-    } else {
-    $dt = sqlesc(time() - 180);
-    $active1 = mysql_query("SELECT id, username, class, warned, donor FROM users WHERE last_access >= $dt ORDER BY class DESC") or sqlerr(__FILE__, __LINE__);
-        while ($active2 = mysql_fetch_assoc($active1)) {
-            $active3[] = $active2;
-        }
-        $OUTPUT = serialize($active3);
-        $fp = fopen($file, "w");
-        fputs($fp, $OUTPUT);
-        fclose($fp);
-    } // end else
-    $activeusers = "";
-    if (is_array($active3))
-    foreach ($active3 as $arr) {
-        if ($activeusers) $activeusers .= ",\n";
-        $activeusers .= "<span style=\"white-space: nowrap;\">"; 
-        $arr["username"] = "<font color='#" . get_user_class_color($arr['class']) . "'> " . htmlspecialchars($arr['username']) . "</font>";
-        $donator = $arr["donor"] === "yes";
-        $warned = $arr["warned"] === "yes";
-     
-        if ($CURUSER)
-            $activeusers .= "<a href='{$TBDEV['baseurl']}/userdetails.php?id={$arr["id"]}'><b>{$arr["username"]}</b></a>";
-        else
-            $activeusers .= "<b>{$arr["username"]}</b>";
-        if ($donator)
-             $activeusers .= "<img src='{$TBDEV['pic_base_url']}star.gif' alt='Donated' />";
-        if ($warned)
-            $activeusers .= "<img src='{$TBDEV['pic_base_url']}warned.gif' alt='Warned' />";
-        $activeusers .= "</span>";
-    }
-     
-    if (!$activeusers)
-        $activeusers = "{$lang['index_noactive']}";
-	
-     $owners      = get_row_count('users', "WHERE owners='yes'");
-     $admins      = get_row_count('users', "WHERE admin='yes'");
-     $moderator   = get_row_count('users', "WHERE moderator='yes'");	 
-     $donors      = get_row_count('users', "WHERE donor='yes'");
-	 $power       = get_row_count('users', "WHERE poweruser='yes'");
-     $members     = get_row_count('users', "WHERE members='yes'");
-     $unverified = number_format(get_row_count("users", "WHERE status='pending'"));	 
-	 
-      echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 901px;padding: 1em;' class='mCol'>
-	        <div class='myBlock'><div style='margin-top:  5px;'>
-            <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_active']}</span></div></div>
-		    <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
-			<div style='margin-top: -5px;text-align: center;color: #b9b9b9;'>
-			Owners ({$owners}) | Administrators ({$admins}) | Moderators ({$moderator}) | V.I.P ({$donors}) | Power Users ({$power}) | Members ({$members}) | Validating ({$unverified})
-			</div>";
-      echo "<table style='margin-top: 5px;border: 1px solid  #222;color: #b9b9b9;' border='0' cellpadding='10' cellspacing='0' width='100%'>
-            <tr class='table'>
-            <td class='text'>{$activeusers}</td>
-			</tr></table></div><div style='margin-top:  11px;'></div>";
 
       echo "<div style='margin-top: -10px;margin-left: -10px;text-align:left;min-width: 901px;padding: 1em;' class='mCol'>
 	        <div class='myBlock2'><div style='margin-top:  5px;'>
