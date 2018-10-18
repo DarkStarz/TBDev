@@ -366,15 +366,15 @@ function catch_up($id = 0)
 					<tr>
 						<td class='embedded' style='padding-right: 5px'><img src='".$TBDEV['pic_base_url'].$img.".gif' alt='' /></td>
 						<td class='embedded'>
-							<a href='".$_SERVER['PHP_SELF']."?action=viewforum&amp;forumid=".$forumid."'><b>". htmlspecialchars($forums_arr["name"])."</b></a>";
-             if ($CURUSER['class'] >= UC_ADMINISTRATOR || isMod($forumid)) {
+							<a style='color: #b9b9b9;' href='".$_SERVER['PHP_SELF']."?action=viewforum&amp;forumid=".$forumid."'><b>". htmlspecialchars($forums_arr["name"])."</b></a>";
+     //        if ($CURUSER['class'] >= UC_ADMINISTRATOR || isMod($forumid)) {
            
-   echo "&nbsp;<font class='small'>[<a class='altlink' href='".$_SERVER['PHP_SELF']."?action=editforum&amp;forumid=".$forumid."'>Edit</a>][<a class='altlink' href='".$_SERVER['PHP_SELF']."?action=deleteforum&amp;forumid=".$forumid."'>Delete</a>]</font>";
-        }
+   //echo "&nbsp;<font class='small'>[<a class='altlink' href='".$_SERVER['PHP_SELF']."?action=editforum&amp;forumid=".$forumid."'>Edit</a>][<a class='altlink' href='".$_SERVER['PHP_SELF']."?action=deleteforum&amp;forumid=".$forumid."'>Delete</a>]</font>";
+       // }
 
         if (!empty($forums_arr["description"])) {
 
-     echo "<br />". htmlspecialchars($forums_arr["description"]);
+     echo "<br /><font color='#ffffff'>". htmlspecialchars($forums_arr["description"])."</font>";
         }
         if ($subforums == false && !empty($sfa[$forumid]))
           echo "<br/>" . subforums($sfa[$forumid]["topics"]);
@@ -385,9 +385,9 @@ function catch_up($id = 0)
 					</tr>
 				</table>
 			</td>
-			<td align='center'>". number_format($topics)."</td>
-			<td align='center'>". number_format($posts)."</td>
-			<td align='left' nowrap='nowrap'>".$lastpost."</td>
+			<td style='color: #ffffff;' align='center'>". number_format($topics)."</td>
+			<td style='color: #ffffff;' align='center'>". number_format($posts)."</td>
+			<td style='color: #ffffff;' align='left' nowrap='nowrap'>".$lastpost."</td>
 		</tr>";
     }
 }
@@ -475,7 +475,7 @@ function insert_quick_jump_menu($currentforum = 0)
 
             echo end_table();
             echo end_main_frame();
-            print stdhead("Compose") . stdfoot();
+            print stdfoot();
             exit();
         }
         
@@ -483,7 +483,7 @@ function insert_quick_jump_menu($currentforum = 0)
 		    echo stdmsg("Sorry", "You are not allowed in here.");
 			echo end_table(); 
 			echo end_main_frame(); 
-				print stdhead("Compose") . stdfoot();
+				print stdfoot();
 		    exit();
 		    }
         echo "<h3 align='center'>Reply to topic: <a href='".$_SERVER['PHP_SELF']."action=viewtopic&amp;topicid=".$id."'>". htmlspecialchars($arr["subject"])."</a></h3>";
@@ -528,7 +528,7 @@ function insert_quick_jump_menu($currentforum = 0)
 
             echo end_table();
             echo end_main_frame();
-            print stdhead("Compose") . stdfoot();
+            print stdfoot();
             exit();
         }
 
@@ -539,7 +539,7 @@ function insert_quick_jump_menu($currentforum = 0)
 
             echo end_table();
             echo end_main_frame();
-            print stdhead("Error - No post with this ID") . stdfoot();
+            print stdfoot();
             exit();
         }
 
@@ -766,7 +766,7 @@ if ($action == 'updatetopic') {
 
         echo end_frame();
         echo end_main_frame();
-        print stdhead("{$lang['forums_title']}") . stdfoot();
+        print stdfoot();
         exit();
     }
 } else if ($action == "updateforum") { // -------- Action: Update Forum
@@ -873,7 +873,7 @@ if ($action == 'updatetopic') {
     echo stdmsg('Warning', 'Forums are currently in maintainance mode');
     echo insert_compose_frame($forumid, true, false, true);
     echo end_main_frame();
-    print stdhead("New Topic") . stdfoot();
+    print stdfoot();
     exit();
 } else if ($action == "post") { // -------- Action: Post
         $forumid = (isset($_POST['forumid']) ? (int)$_POST['forumid'] : null);
@@ -1631,7 +1631,7 @@ function confirm_att(id)
 
    echo end_main_frame();
     
-    print stdhead("Forums :: View Topic: $subject") . stdfoot();
+    print stdfoot();
 
     $uploaderror = (isset($_GET['uploaderror']) ? htmlspecialchars($_GET['uploaderror']) : '');
 
@@ -1651,7 +1651,7 @@ function confirm_att(id)
     echo stdmsg('Warning', 'Forums are currently in maintainance mode');
     echo insert_compose_frame($topicid, false, true);
     echo end_main_frame();
-    print stdhead("Post quote") . stdfoot();
+    print stdfoot();
     exit();
 } else if ($action == "reply") { // -------- Action: Reply
         $topicid = (int)$_GET["topicid"];
@@ -1663,7 +1663,7 @@ function confirm_att(id)
     echo stdmsg('Warning', 'Forums are currently in maintainance mode');
     echo insert_compose_frame($topicid, false, false, true);
     echo end_main_frame();
-    print stdhead("Post reply") . stdfoot();
+    print stdfoot();
     exit();
 } else if ($action == "editpost") { // -------- Action: Edit post
         $postid = (int)$_GET["postid"];
@@ -1728,7 +1728,7 @@ function confirm_att(id)
 	</form>";
 	
     echo end_main_frame();
-    print stdhead("Edit Post") . stdfoot();
+    print stdfoot();
     exit();
 } elseif ($action == "deletetopic") {
     $topicid = (int)$_GET['topicid'];
@@ -1979,7 +1979,7 @@ function confirm_att(id)
 	</form>";
 
 	echo end_main_frame(); 
-	print stdhead("Polls") . stdfoot();
+	print stdfoot();
 }
 else if ($use_attachment_mod && $action == "attachment")
 {
@@ -2263,7 +2263,7 @@ else if ($use_attachment_mod && $action == "whodownloaded")
 		echo "<p align='center'>No topics found</p>";
 	  }
 	
-	echo $menu1.$mlb.$menu2.$mlb.$menu3;
+	//echo $menu1.$mlb.$menu2.$mlb.$menu3;
 
 	echo "<table class='main' border='0' cellspacing='0' cellpadding='0' align='center'>
 	<tr align='center'>
@@ -2298,9 +2298,10 @@ else if ($use_attachment_mod && $action == "whodownloaded")
 	}
 	
 	echo "</tr></table>";
-	echo insert_quick_jump_menu($forumid);
+	echo $menu1.$mlb.$menu2.$mlb.$menu3;
+	//echo insert_quick_jump_menu($forumid);
 	echo end_main_frame(); 
-	print stdhead("New Topic") . stdfoot();
+	print stdfoot();
 	exit();
 }
 
@@ -2416,7 +2417,7 @@ else if ($action == 'viewunread') { // -------- Action: View unread posts
                echo "<div align='center'><a href='" . $_SERVER['PHP_SELF'] . "?catchup'>Mark all posts as read</a></div>";
 
                 echo end_main_frame();
-                print stdhead("Catch Up") . stdfoot();
+                print stdfoot();
                 die();
             } else
                 stderr("Sorry...", "There are no unread posts.<br /><br />Click <a href='" . $_SERVER['PHP_SELF'] . "?action=getdaily'>here</a> to get today's posts (last 24h).");
@@ -2497,7 +2498,7 @@ else if ($action == 'viewunread') { // -------- Action: View unread posts
 	echo end_table();
 	echo $pager['pagerbottom'];
 	echo end_main_frame(); 
-	print stdhead('Today Posts (Last 24 Hours)') . stdfoot();
+	print stdfoot();
 }
 else if ($action == "search") //-------- Action: Search
 {
@@ -2585,7 +2586,7 @@ else if ($action == "search") //-------- Action: Search
 	</form>
  </div>
 	</div>";
-	print stdhead("Forum Search") . stdfoot();
+	print stdfoot();
 	exit();
 
 
@@ -2622,7 +2623,7 @@ else if ($action == "search") //-------- Action: Search
         echo end_table();
 
         echo end_main_frame();
-        print stdhead("Forums") . stdfoot();
+        print stdfoot();
         exit();
     
     } else { // -------- Default action: View forums
@@ -2664,11 +2665,17 @@ else if ($action == "search") //-------- Action: Search
 
             if ($TBDEV['forums_online'] == 0)
             echo stdmsg('Warning', 'Forums are currently in maintainance mode');
-            echo begin_main_frame();
+           //echo begin_forum_frame();
 
-           echo "<h1 align='center'><b>{$TBDEV['site_name']} - Forum</b></h1>
+ echo "<div style='position: relative;margin-top: 20px;-webkit-margin-before: 1px;' class='shout_title'><div style='margin-top: -5px;margin-left: -10px;float: left;'>SceneZone Forums</div></div>
 	<br />
 	<table border='1' cellspacing='0' cellpadding='5' width='{$forum_width}'>";
+	echo "<p style='margin-top: -10px;margin-left: 400px;' align='center'>
+	<a class='fbtn' href='". $_SERVER['PHP_SELF']."?action=search'><b>Search Forums</b></a> 
+	<a class='fbtn' href='". $_SERVER['PHP_SELF']."?action=viewunread'><b>New Posts</b></a> 
+	<a class='fbtn' href='". $_SERVER['PHP_SELF']."?action=getdaily'><b>Todays Posts (Last 24 h.)</b></a>
+	<a class='fbtn' href='". $_SERVER['PHP_SELF']."?catchup'><b>Mark all as read</b></a>";
+	echo "</p>";	
 	$ovf_res = mysql_query("SELECT id, name, minclassview FROM overforums ORDER BY sort ASC") or sqlerr(__FILE__, __LINE__);
 	while ($ovf_arr = mysql_fetch_assoc($ovf_res))
 	{
@@ -2676,27 +2683,29 @@ else if ($action == "search") //-------- Action: Search
 	continue;
   $ovfid = (int)$ovf_arr["id"];
   $ovfname = $ovf_arr["name"];
-  echo "<tr>
-      <td align='left' class='colhead' width='100%'><a href='".$_SERVER['PHP_SELF']."?action=forumview&amp;forid=".$ovfid."'>
-      <b><font color='white'>".htmlspecialchars($ovfname)."</font></b></a></td>
-			<td align='right' class='colhead'><font color='white'><b>Topics</b></font></td>
-			<td align='right' class='colhead'><font color='white'><b>Posts</b></font></td>
-			<td align='left' class='colhead'><font color='white'><b>Last post</b></font></td>
-		</tr>";
-    
+
+  echo "<div style='margin-top: 0px;'>
+	    <table style='margin-top: -35px;margin-left: -20px;' border='1' cellspacing='0' cellpadding='5' width='70%'>
+        <tr>
+        <td align='left' class='forums_head' width='100%'>
+        <a class='altlink_forum' href='".$_SERVER['PHP_SELF']."?action=forumview&amp;forid=".$ovfid."'><span style='font-size:12pt;font-weight:bold;'><font color='white'>".htmlspecialchars($ovfname)."</font></span></a>
+        </td>
+        <td align='right' class='forums_head'>
+		<span style='margin-left: -0px;color: #b9b9b9;font-weight:bold;'>Topics</span></td>
+        <td align='right' class='forums_head'>
+		<span style='margin-left: 0px;color: #b9b9b9;font-weight:bold;'>Posts</span></td>
+        <td align='' class='forums_head'><span style='color: #b9b9b9;margin-left: 50px;font-weight:bold;'>
+		<div style='margin-top: -13px;margin-left: -10px;'>Last post</div></span></td>
+        </tr>"; 
+		
   echo show_forums($ovfid, false, $forums, $f_mod, true);
+  echo "<br /><br /><br />";
     }
-    echo end_table();
-
-            if ($use_forum_stats_mod)
-              echo forum_stats();
-
-	echo "<p align='center'>
-	<a href='". $_SERVER['PHP_SELF']."?action=search'><b>Search Forums</b></a> | 
-	<a href='". $_SERVER['PHP_SELF']."?action=viewunread'><b>New Posts</b></a> | 
-	<a href='". $_SERVER['PHP_SELF']."?action=getdaily'><b>Todays Posts (Last 24 h.)</b></a> | 
-	<a href='". $_SERVER['PHP_SELF']."?catchup'><b>Mark all as read</b></a>";
-	echo "</p>";
+  //echo end_table();
+  echo "</table></div>";
+  
+            //if ($use_forum_stats_mod)
+              //echo forum_stats();
 	echo end_main_frame(); 
 echo stdfoot();
 }

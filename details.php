@@ -62,7 +62,7 @@ loggedinorreturn();
       exit();
     }
 	
-$res = mysql_query("SELECT torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, LENGTH(torrents.nfo) AS nfosz, torrents.last_action AS lastseed, torrents.numratings, torrents.name, IF(torrents.numratings < {$TBDEV['minvotes']}, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.comments, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, categories.name AS cat_name, users.username FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id")
+$res = mysql_query("SELECT torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.poster, torrents.filename, LENGTH(torrents.nfo) AS nfosz, torrents.last_action AS lastseed, torrents.numratings, torrents.name, IF(torrents.numratings < {$TBDEV['minvotes']}, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.comments, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, categories.name AS cat_name, users.username FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id")
 	or sqlerr();
 $row = mysql_fetch_assoc($res);
 
@@ -119,8 +119,12 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 //		if ($owned)
 //			$s .= " $spacer<$editlink>[Edit torrent]</a>";
 //		tr("Name", $s, 1);
-
-		$HTMLOUT .= "<tr><td class='rowhead' width='1%'>{$lang['details_download']}</td><td width='99%' align='left'><a class='index' href='download.php?torrent=$id'>" . htmlspecialchars($row["filename"]) . "</a></td></tr>";
+    if (!empty($row["poster"]))
+        $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='".$row["poster"]."' alt='' />", 1);
+        else
+        $HTMLOUT .= tr("{$lang['details_poster']}", "<img src='{$TBDEV['baseurl']}/pic/noposter.jpg' alt='No poster' title='No poster available' />", 1);
+	
+		$HTMLOUT .= "<tr><td class='rowhead' width='1%'>{$lang['details_download']}</td><td width='99%' align='left'><a class='index' href='download.php?torrent=$id'>" . htmlspecialchars($row["name"]) . "</a></td></tr>";
 /*
 		function hex_esc($matches) {
 			return sprintf("%02x", ord($matches[0]));
@@ -131,7 +135,7 @@ if (!$row || ($row["banned"] == "yes" && !$moderator))
 
 		if (!empty($row["descr"]))
 			$HTMLOUT .= "<tr><td style='vertical-align:top'>{$lang['details_description']}</td><td><div style='background-color:#d9e2ff;width:100%;height:150px;overflow: auto'>". str_replace(array("\n", "  "), array("<br />\n", "&nbsp; "), format_comment( $row["descr"] ))."</div></td></tr>";
-			
+
     if (get_user_class() >= UC_POWER_USER && $row["nfosz"] > 0)
       $HTMLOUT .= "<tr><td class='rowhead'>{$lang['details_nfo']}</td><td align='left'><a href='viewnfo.php?id=$row[id]'><b>{$lang['details_view_nfo']}</b></a> (" .mksize($row["nfosz"]) . ")</td></tr>\n";
       

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<rss version="0.91">
+<channel>
+<title>SceneZone</title>
+<description>TBDev is the best!</description>
+<link>https://localhost/</link>
+<item>
+<title>TBDev.2009(Final) (Comics)</title>
+<description>Duration: 00:44:08
+Release size: 798 MB
+Video Bitrate: 2 390 Kbps
+Frame rate: 23.976 Fps
+MP3 2ch CBR: 128kbps
+Video resolution: 640x360 (16:9) Extra infos
+Format: AVI (Audio Video Interleaved)
+Encoder: Lavf57.81.100 Video info
+Frame rate: 1846/77
+Codec name: MPEG-4 part 2
+Codec type: video
+Codec height: 360
+Codec width: 640
+Display ratio: 16:9
+Pixel format: yuv420p
+Profile: Simple Profile
+Language: n/a Audio info
+Channel layout: stereo
+Codec name: mp3
+Codec type: audio
+Sample rate: 48000 </description>
+<link>https://localhost/details.php?id=3&amp;hit=1</link>
+</item>
+</channel>
+</rss>

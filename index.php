@@ -21,45 +21,53 @@ require_once "include/user_functions.php";
 dbconn(true);
 loggedinorreturn();
 $lang = array_merge( load_language('global'), load_language('index') );
-stdhead('Home');			
-    // 09 poster mod
-        $query = "SELECT id, name, poster FROM torrents WHERE poster <> '' ORDER BY added DESC limit 15";
-        $result = mysql_query( $query );
-        $num = mysql_num_rows( $result );
-        // count rows
-        echo "<script type='text/javascript' src='{$TBDEV['baseurl']}/scripts/scroll.js'></script>";
-        echo "<div style='margin-top:  -10px;margin-left: -25px;padding: 1em;max-width: 900px;' class='mCol'>
+stdhead('Home');
+echo '<script type="text/javascript" src="js/jssor.slider-21.1.6.min.js"></script>
+<script type="text/javascript" src="js/jssor.slider.js"></script>';
+//echo"<div style='border: 1px solid #555;width: 70%;'>"; // used to align the addon's (=
+//Start of Lastest Torrents with Poster Slider [=
+echo "<div style='margin-top:  -10px;margin-left: 0px;padding: 1em;max-width: 895px;' class='mCol'>
               <div class='myBlock'>
 	          <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
               <div class='myBlock-cap'><span  style='margin-left: -745px;font-weight:bold;font-size:12pt;'>{$lang['index_latest']}</span></div></div>
               <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
-              <div style='background-color: #1f1f1f;' style=\"overflow:hidden\">
-              <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> 
-              <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">";
-        $i = 20;
-        while ( $row = mysql_fetch_assoc( $result ) ) {
-            $id = (int) $row['id'];
-            $name = htmlspecialchars( $row['name'] );
-            $poster = htmlspecialchars( $row['poster'] );
-            $name = str_replace( '_', ' ' , $name );
-            $name = str_replace( '.', ' ' , $name );
-            $name = substr( $name, 0, 50 );
-            if ( $i == 0 )
-            echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div><div style=\"overflow:hidden\">
-            <div id=\"marqueecontainer\" onmouseover=\"copyspeed=pausespeed\" onmouseout=\"copyspeed=marqueespeed\"> <span id=\"vmarquee\" style=\"position: absolute; width: 98%;\"><span style=\"white-space: nowrap;\">
-            <a href='{$TBDEV['baseurl']}/details.php?id=$id'><img src='" . htmlspecialchars( $poster ) . "' alt='$name' title='$name' width='100' height='120' border='0' /></a>";
-            $i++;
-        }
-        echo "</span></span><span id=\"vmarquee2\" style=\"position: absolute; width: 98%;\"></span></div></div></div></div>";
-        //== end 09 poster mod		
+	  <div style='margin-top: -8px;background-color: #1f1f1f;'>
+	  <div id='jssor_1' style='position: relative; margin: 0 auto; top: 20px; left: 0px; width: 1000px; height: 150px; overflow: hidden;'>
+      <div data-u='slides' style='cursor: default; position: relative; top: 0px; left: 0px; width: 1000px; height: 150px; overflow: hidden;'>";
+////////////// FreeTSP Query ///////////////////////
+$freetsp = mysql_query("SELECT id, seeders, leechers, name, poster FROM torrents WHERE visible = 'yes' ORDER BY added DESC LIMIT 32") or sqlerr(__FILE__, __LINE__);
+///////////////////////////////////////////////////
+if (mysql_num_rows($freetsp) > 0) {
 	
+  while ($row = mysql_fetch_assoc($freetsp)) {
+	   
+	   $id       = (int) $row['id'];
+	   $name     = htmlspecialchars($row['name']);
+	   $poster   = ($row['poster'] == '' ? '/images/no_poster.png' : htmlspecialchars( $row['poster'] ));
+       $seeders  = number_format($row['seeders']);
+       $leechers = number_format($row['leechers']);
+       $name     = str_replace('_','',$name);
+       $name     = str_replace('.','',$name);
+       $name     = substr($name, 0, 50);	   
+
+  echo "<div class='smooth'>
+        <a href=\"details.php?id=".$row['id']."\" title=\"".$name."\" /><img class=\"img-thumbnail\" src=\"".$poster."\" width=\"100\" height=\"100\" title=\"".$name."\" border=0 /></a>&nbsp;&nbsp;&nbsp;
+		<div class='go-left'>
+         <div style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;".$row['seeders']." Seed</div> &nbsp; <div style='float:right;'>".$row['leechers']." Leech</div>
+        </div>
+        </div>";
+  }
+}
+echo "</div></div><span style='padding: 0.1em;'></span></div></div><script type='text/javascript'>jssor_1_slider_init();</script><br />";
+//End of Lastest Torrents with Poster Slider [=  		
+echo "<div style='margin-left: 30px;'>";	
 $adminbutton = '';   
     
     if (get_user_class() >= UC_ADMINISTRATOR)
           $adminbutton = "&nbsp;<span  style='float:right;'><a href='admin.php?action=news'><img title='Add News' width='20' height='20' src='pic/plus.png'/></a></span>\n";
           
     echo "
-    <div style='margin-top:  -10px;margin-left: -25px;padding: 1em;max-width: 900px;' class='mCol'>
+    <div style='margin-top:  -10px;margin-left: -40px;padding: 1em;min-width: 895px;' class='mCol'>
     <div class='myBlock'><div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
     <div class='myBlock-cap'><span  style='margin-left: -815px;font-weight:bold;font-size:12pt;'>News</span>{$adminbutton}</div></div>
     <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
@@ -95,9 +103,10 @@ $adminbutton = '';
      
     }
     echo "</div></div></div>\n";
-
+echo "</div>";
+echo "<div style='margin-left: 25px;'>";
     // === shoutbox 09
-    echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 901px;padding: 1em;' class='mCol'>
+    echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 895px;padding: 1em;' class='mCol'>
 	      <div class='myBlock'><div style='margin-top:  5px;'>
           <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>Chat</span></div></div>
 		  <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>  
@@ -160,7 +169,7 @@ $adminbutton = '';
      $members     = get_row_count('users', "WHERE members='yes'");
      $unverified = number_format(get_row_count("users", "WHERE status='pending'"));	 
 	 
-      echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 901px;padding: 1em;' class='mCol'>
+      echo "<div style='margin-top: -10px;margin-left: -25px;text-align:left;max-width: 897px;padding: 1em;' class='mCol'>
 	        <div class='myBlock'><div style='margin-top:  5px;'>
             <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_active']}</span></div></div>
 		    <div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
@@ -173,7 +182,7 @@ $adminbutton = '';
 			</tr></table></div><div style='margin-top:  11px;'></div>";
 			
 // whitelist clients	
-  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 901px;' class='mCol'>
+  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 895px;' class='mCol'>
         <div class='myBlock'>
 	    <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
         <div class='myBlock-cap'><span  style='margin-left: -5px;font-weight:bold;font-size:12pt;'>Client Whitelist</span></div></div>
@@ -218,7 +227,7 @@ $adminbutton = '';
  $donors = number_format($row['donors']);
  $forumposts = number_format($row['forumposts']);
  $forumtopics = number_format($row['forumtopics']);
-  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 901px;' class='mCol'>
+  echo "<div style='margin-top:  -10px;margin-left: -10px;padding: 1em;min-width: 895px;' class='mCol'>
         <div class='myBlock'>
 	    <div style='margin-top:  5px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,  255, 255, 0.2);'>
         <div class='myBlock-cap'><span  style='margin-left: -5px;font-weight:bold;font-size:12pt;'>Statistics</span></div></div>
@@ -260,7 +269,7 @@ $adminbutton = '';
         <td class='rowhead'>{$lang['index_stats_slratio']}</td><td align='right'>{$ratio}</td>
         </tr></table></td></tr></table></div></div><br />";		
 // Disclaimer
-  echo "<div style='margin-top: -15px;margin-left: -10px;text-align:left;min-width: 901px;padding: 1em;' class='mCol'>
+  echo "<div style='margin-top: -15px;margin-left: -10px;text-align:left;min-width: 895px;padding: 1em;' class='mCol'>
 	    <div class='myBlock2'><div style='margin-top:  5px;'>
         <div class='myBlock-cap'><span style='font-weight:bold;font-size:12pt;'>Disclaimer</span></div></div>
 		<div style='padding: 5px;margin-top: -3px;margin-left: 0px;max-width:  900px;box-shadow: inset 0 1px 0 rgba(255, 255, 255,  0.2);'></div>
@@ -269,6 +278,6 @@ $adminbutton = '';
 	    <div style='margin-top:  5px;'></div>
 	    </div></div>";
 ///////////////////////////// FINAL OUTPUT //////////////////////
-
+echo "</div>"; // removed a div because they are align to center of page
 echo stdfoot();
 ?>

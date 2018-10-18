@@ -38,13 +38,16 @@ loggedinorreturn();
     }
 
     if (!isset($_FILES["file"]))
-      stderr($lang['takeupload_failed'], $lang['takeupload_no_formdata']);
-
+      stderr($lang['takeupload_failed'], $lang['takeupload_no_formdata']); 
+  
     $f = $_FILES["file"];
     $fname = unesc($f["name"]);
     if (empty($fname))
       stderr($lang['takeupload_failed'], $lang['takeupload_no_filename']);
-      
+  
+    if (!empty($_POST['poster']))
+        $poster = unesc($_POST['poster']); 
+	
     $nfo = sqlesc('');
     /////////////////////// NFO FILE ////////////////////////	
     if(isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
@@ -66,7 +69,7 @@ loggedinorreturn();
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
     }
     /////////////////////// NFO FILE END /////////////////////
-
+	
     $descr = unesc($_POST["descr"]);
     if (!$descr)
       stderr($lang['takeupload_failed'], $lang['takeupload_no_descr']);
@@ -190,8 +193,8 @@ loggedinorreturn();
     $torrent = str_replace("_", " ", $torrent);
 
 
-    $ret = mysql_query("INSERT INTO torrents (search_text, filename, owner, visible, info_hash, name, size, numfiles, type, descr, ori_descr, category, save_as, added, last_action, nfo, client_created_by) VALUES (" .
-        implode(",", array_map("sqlesc", array(searchfield("$shortfname $dname $torrent"), $fname, $CURUSER["id"], "no", $infohash, $torrent, $totallen, count($filelist), $type, $descr, $descr, 0 + $_POST["type"], $dname))) .
+    $ret = mysql_query("INSERT INTO torrents (search_text, poster, filename, owner, visible, info_hash, name, size, numfiles, type, descr, ori_descr, category, save_as, added, last_action, nfo, client_created_by) VALUES (" .
+            implode(",", array_map("sqlesc", array(searchfield("$shortfname $dname $torrent"), $fname, $poster, $CURUSER["id"], "no", $infohash, $torrent, $totallen, count($filelist), $type, $descr, $descr, 0 + $_POST["type"], $dname))) .
         ", " . time() . ", " . time() . ", $nfo, $tmaker)");
     if (!$ret) {
       if (mysql_errno() == 1062)

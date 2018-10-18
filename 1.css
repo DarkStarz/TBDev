@@ -1430,4 +1430,162 @@ div.stats_info {
   padding: 0.2em;
   border: 1px solid #1c252b;
   margin-left:0px;	
+}
+
+a.fbtn {
+	
+    display               : inline-block;
+    outline               : none;
+    cursor                : pointer;
+    text-align            : center;
+    text-decoration       : none;
+    /*font: 16px Helvetica, sans-serif;*/
+    padding: 7px 12px;
+		color: #b9b9b9;
+	text-shadow: 1px 1px #1f272b;
+  background: #3e3e3e;
+  border-top: 1px solid #353939;
+  border-left: 1px solid #2e3131;
+  border-right: 1px solid #2e3131;
+  border-bottom: 1px solid #2e3131;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  border: 1px solid #222;		
+}
+
+a.fbtn:hover
+{
+    background      : #363535; /*   Changes the top color of the button */
+    text-decoration : none;
+    color           : #ffffff; /* Changes the font  color of the buttons on hover*/
+}
+
+td.forums_head {
+	border: none;	
+ background-color: #333333;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;
+border: 1px solid #222;  
+}
+
+div.forum_filter {
+	
+  font-size: 18px;	
+  background: #444647;
+  border-top: 1px solid #353939;
+  border-bottom: 1px solid #2e3131;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;	
+  margin: -10px 0 25px;
+  height: 15px;
+  width: 90%;
+}
+
+div.forum_beta_title {
+	
+  font-size: 18px;	
+  background: #444647;
+  border: 1px solid #353939;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;	
+  margin: -10px 0 25px;
+  height: 15px;
+  width: 95.2%;
 }	
+
+a.altlink_forum:visited
+{
+    font-weight     : bold;
+    color           : #ffffff; /*   Change the font color to match altlink_forum */
+    text-decoration : none;
+}
+
+a.altlink_forum:hover
+{
+    text-decoration : none;
+    color           : #ff0000; /*   Change the font color of the hover links in forums */
+}
+
+div.shout_title {
+
+  width: 66.8%;	
+  font-size: 18px;	
+      background-color: #333333;
+  color: #FFF;
+  border-top: 1px solid #353939;
+  border-bottom: 1px solid #2e3131;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;
+  margin-top: -50px;  
+  margin-left: -18px;
+  height: 15px;
+  border: 1px solid #222;
+}
+
+/* Smooth Caption */
+.smooth
+{
+    opacity: 1;    
+    float: left;
+    position: relative;    
+    overflow: hidden;
+    -webkit-transition: 0.5s Ease;
+    -moz-transition: 0.5s Ease;
+    -o-transition: 0.5s Ease;
+    transition: 0.5s Ease;  
+}
+.smooth:hover img
+{
+    opacity: 0.6;
+    box-shadow: 0px 0px 10px #333333;
+}
+.go-left
+{
+    background-color: rgba(0,0,0,0.5);
+    color: #FFFFFF;
+    position: absolute;
+    bottom: -5px;
+    right: -600px;
+    width: 100px;
+	height: 25px;
+    text-align:center;   
+    font-size: 8pt;
+    margin: 8px;
+    padding: 10px;
+    -webkit-transition: 0.5s Ease;
+    -moz-transition: 0.5s Ease;
+    -o-transition: 0.5s Ease;
+    transition: 0.5s Ease;
+}
+.smooth:hover > .go-left
+{    
+    right:0px;    
+}
+
+div.latest_filter {
+	
+  font-size: 18px;	
+  background: #444647;
+  border-top: 1px solid #353939;
+  border-bottom: 1px solid #2e3131;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;	
+  margin: -10px 0 25px;
+  height: 15px;
+}
+
+div.latest_info {
+	
+  margin-top: -25px;
+  background: #5f6364;
+  width: 99.3%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 0.2em;
+  border: 1px solid #1c252b;
+  margin-left:0px;	
+}
