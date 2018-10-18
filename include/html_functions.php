@@ -25,6 +25,11 @@
       "<tr><td class='embedded'>\n";
   }
 
+  function begin_forum_frame()
+  {
+    return "";
+  }  
+  
   //-------- Ends a main frame
 
   function end_main_frame()

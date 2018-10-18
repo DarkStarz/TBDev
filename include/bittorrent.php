@@ -433,10 +433,11 @@ echo "<div style='padding: 3.2em;'></div>
 if ($CURUSER) { 
 echo "<ul style='max-width: 100%;' id='nav'>
       <li><a href='index.php'>{$lang['gl_home']}</a></li>
+	  <li><a href='upload.php'>Upload</a></li>	  
 	  <li><a href='forums.php'>{$lang['gl_forums']}</a></li>
-	  <li><a href='request.php'>{$lang['gl_request']}</a></li>	  
-      <li><a href='browse.php'>{$lang['gl_browse']}</a></li>
-	  <li><a href='upload.php'>Share File</a></li>	  
+      <li><a href='browse.php'>{$lang['gl_browse']}</a></li>	  
+	  <li><a href='request.php'>{$lang['gl_request']}</a></li>
+      <li><a href='mybonus.php'>Bonus Shop</a></li>	  
 	  <li><a href='contact.php'>{$lang['gl_contactus']}</a></li>	  
 	  <li><a href='staff.php'>{$lang['gl_staff']}</a></li>
 	  
@@ -463,7 +464,7 @@ if ( $CURUSER && $unread >= "1" ) {
 function stdfoot() {
   global $TBDEV;
   
-    return "</td></tr></table><div style='padding: 1em;'></div>
+    return "</td></tr></table><text style='float:right;'><font color='#ffffff'>Powered by TBDev</font></text><div style='padding: 1em;'></div>
     </body></html>\n";
 }
 
@@ -608,11 +609,11 @@ function stdmsg($heading, $text)
 
 function stderr($heading, $text)
 {
-    $htmlout = stdhead();
-    $htmlout .= stdmsg($heading, $text);
-    $htmlout .= stdfoot();
+    //$htmlout = stdhead();
+    echo stdmsg($heading, $text);
+    echo stdfoot();
     
-    print $htmlout;
+    //print $htmlout;
     exit();
 }
 	

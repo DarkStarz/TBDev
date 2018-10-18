@@ -111,7 +111,7 @@ if ( ! defined( 'IN_TBDEV_FORUM' ) )
     else
       $HTMLOUT .= "{$lang['forum_view_unread_not_found']}";
 
-    print stdhead("{$lang['forum_view_unread_posts']}") . $HTMLOUT . stdfoot();
+    print $HTMLOUT . stdfoot();
 
     die;
  ?>
