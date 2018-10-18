@@ -8,6 +8,8 @@ $lang = array(
 'edit_no_permission' => "<h1>Can't edit this torrent</h1><p>You're not the rightful owner, or you're not <a href='login.php?returnto=%s&amp;nowarn=1'>logged in</a> properly.</p>",
 
 #edit options
+'edit_poster' => "Poster",
+'edit_poster1' => "Direct link for a poster image to be shown on the details page",
 'edit_torrent_name' => "Torrent name",
 'edit_nfo' => "NFO file",
 'edit_keep_current' => "Keep current",

@@ -9,6 +9,8 @@ $lang = array(
 'upload_delete' => "Delete",
 
 #upload options
+'upload_poster' => "Poster",
+'upload_poster1' => "Direct link for a poster image to be shown on the details page",
 'upload_torrent' => "Torrent file",
 'upload_name' => "Torrent name",
 'upload_filename' => "Taken from filename if not specified. <b>Please use descriptive names.</b>",

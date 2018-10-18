@@ -3,6 +3,7 @@
 $lang = array(
 
 #Details
+'details_poster' => "Poster",
 'details_user_error' => "USER ERROR",
 'details_bad_id' => "Bad ID",
 'details_error' => "Error",
